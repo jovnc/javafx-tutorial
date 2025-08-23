@@ -30,11 +30,19 @@ public class Main extends Application {
         userInput = new TextField();
         sendButton = new Button("Send");
 
-        DialogBox dialogBox = new DialogBox("Hello!", userImage);
-        dialogContainer.getChildren().addAll(dialogBox);
-
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
+
+        // Handle user input
+        sendButton.setOnMouseClicked(event -> {
+            handleUserInput();
+        });
+        userInput.setOnAction(event -> {
+            handleUserInput();
+        });
+
+        // Scroll down automatically when dialogContainer height changes
+        dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
 
         // UI Styling
         stage.setTitle("Duke");
@@ -69,5 +77,10 @@ public class Main extends Application {
         scene = new Scene(mainLayout);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void handleUserInput() {
+        dialogContainer.getChildren().addAll(new DialogBox(userInput.getText(), userImage));
+        userInput.clear();
     }
 }
